@@ -1,55 +1,53 @@
-import smtplib                               # Simple mail transform protocol
-import speech_recognition as sr             # recognize the voice
-import pyttsx3                               # python text to speech
-from email.message import EmailMessage       # importing  email message
+import smtplib                              
+import speech_recognition as sr            
+import pyttsx3                              
+from email.message import EmailMessage      
 
 
-listener = sr.Recognizer()                # recognize whatever you speak
-engine = pyttsx3.init()                   # talking engine which will talk to the source
-
+listener = sr.Recognizer()               
+engine = pyttsx3.init()                  
 
 def talk(text):
-    engine.say(text)                           # engine  say something like text
-    engine.runAndWait()                         # execute and wait for the source voice
+    engine.say(text)                           
+    engine.runAndWait()                         
 
 
 
 def get_info_fn():
     try:
-        with sr.Microphone() as sVoice:                   # sVoice  is a name of the source voice
+        with sr.Microphone() as sVoice:                   
             print('voice recognization.....')
-            voice = listener.listen(sVoice)               # listen the voice of the source
-            info = listener.recognize_google(voice)       # calling google API to convert source voice into text
+            voice = listener.listen(sVoice)               
+            info = listener.recognize_google(voice)       
             print(info)
-            return info.upper()                           # convert info in upper case and return
+            return info.upper()                           
     except:
-        pass                                             # it means there is no exception therefore pass
-
+        pass                                             
 
 def get_email_info():
     talk('Hello! Welcome to the voice based email service')
-    talk(' Whom do you  want to send the email')   # talk function call
-    name = get_info_fn()                           # get the name through the voice of source
-    receiver = receivers_email_list[name]                 # search the name in the email list
-    print(receiver)                                # print the name get earlier
+    talk(' Whom do you  want to send the email')   
+    name = get_info_fn()                           
+    receiver = receivers_email_list[name]                 
+    print(receiver)                                
     talk('What is the subject of your email?')
-    subject = get_info_fn()                        # get the subject through the voice of source
+    subject = get_info_fn()                         
     talk('Tell me the message you want to sent')
-    message = get_info_fn()                        # get the message through the voice of source
+    message = get_info_fn()                        
 
-    send_email(receiver, subject, message)      # calling the sending email function the the 3 parameters
+    send_email(receiver, subject, message)      
 
 
 def send_email(receiver, subject, message):
-    server = smtplib.SMTP('smtp.gmail.com', 587)         # connecting to the server ('server name ',port no.)
-    server.starttls()                                    # tls-transfer layer security
-    server.login('visualspprt@gmail.com', 'Help@123')
+    server = smtplib.SMTP('smtp.gmail.com', 587)        
+    server.starttls()                                    
+    server.login('visualspprt@gmail.com', 'Password')
     email = EmailMessage()
     email['From'] = 'visualspprt@gmail.com'
     email['To'] = receiver
     email['Subject'] = subject
-    email.set_content(message)                             # set the content of the message(body)
-    server.send_message(email)                              # call the server to send the email
+    email.set_content(message)                             
+    server.send_message(email)                              
     talk('Hey your email has been sent.')
     talk('Do you want to send more email?')
     send_more = get_info_fn()
@@ -65,5 +63,4 @@ receivers_email_list = {
     'SHILPA':'silpa2310ae@gmail.com',
 }
 if __name__ == "__main__":
-  get_email_info()                                  #  get email info function call
-
+  get_email_info()                                 \
